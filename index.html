@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🐉 Dragon Hatch</title>
+
+<style>
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#111,#222,#333);
+    color:white;
+    text-align:center;
+}
+
+h1{
+    margin-top:30px;
+    font-size:3rem;
+}
+
+#gold{
+    font-size:1.5rem;
+    margin:20px;
+    color:gold;
+}
+
+button{
+    padding:15px 35px;
+    font-size:22px;
+    border:none;
+    border-radius:12px;
+    cursor:pointer;
+}
+
+#eggBtn{
+    background:gold;
+    color:black;
+}
+
+#result{
+    margin-top:40px;
+    font-size:2rem;
+    min-height:80px;
+}
+
+#inventory{
+    max-width:800px;
+    margin:40px auto;
+    text-align:left;
+    background:#222;
+    padding:20px;
+    border-radius:15px;
+}
+
+.dragon{
+    padding:8px;
+    border-bottom:1px solid #444;
+}
+
+.common{color:lightgray;}
+.rare{color:lime;}
+.epic{color:#4aa3ff;}
+.legendary{color:violet;}
+.mythic{color:gold;}
+.ancient{color:red;}
+.celestial{color:cyan;}
+
+</style>
+</head>
+<body>
+
+<h1>🐉 Dragon Hatch</h1>
+
+<div id="gold">Gold: 100</div>
+
+<button id="eggBtn">🥚 Ei öffnen (10 Gold)</button>
+
+<div id="result"></div>
+
+<div id="inventory">
+<h2>📦 Inventar</h2>
+<div id="items"></div>
+</div>
+
+<script>
+
+let gold = 100;
+let inventory = [];
+
+const dragons = {
+
+common:[
+"Müsliriegel-Drache",
+"Schlafsack-Drache",
+"Dosencola-Drache",
+"WLAN-Schnorrer-Drache",
+"Einkaufswagen-Drache"
+],
+
+rare:[
+"Trendtanz-Drache",
+"Livestream-Drache",
+"Selfie-Drache",
+"Viralclip-Drache",
+"Hashtag-Drache"
+],
+
+epic:[
+"WhatsApp-Mastermind-Drache",
+"Erfolgsseminar-Drache",
+"Luxusmietwagen-Drache",
+"Krypto-Coach-Drache",
+"Passives-Einkommen-Drache"
+],
+
+legendary:[
+"Titan-Faust-Drache",
+"Oktagon-Drache",
+"Champion-Drache",
+"Berserker-Drache",
+"Gladiator-Drache"
+],
+
+mythic:[
+"Goldkronen-Drache",
+"Sonnenbarren-Drache",
+"Diamantflügel-Drache",
+"Imperator-Drache",
+"Schatzkammer-Drache"
+],
+
+ancient:[
+"Feuersturm-Drache",
+"Tsunami-Drache",
+"Himmelswind-Drache",
+"Erdbeben-Drache",
+"Avatar-Drache"
+],
+
+celestial:[
+"Sternenkaiser-Drache",
+"Unendlicher-Krieger-Drache",
+"Galaxien-Fürst-Drache",
+"Leerenkönig-Drache",
+"Himmelsgott-Drache"
+]
+
+};
+
+function randomFrom(arr){
+    return arr[Math.floor(Math.random()*arr.length)];
+}
+
+function hatch(){
+
+    if(gold < 10){
+        alert("Zu wenig Gold!");
+        return;
+    }
+
+    gold -= 10;
+
+    let roll = Math.random();
+
+    let rarity;
+    let dragon;
+
+    if(roll < 0.50){
+        rarity="common";
+        dragon=randomFrom(dragons.common);
+    }
+    else if(roll < 0.75){
+        rarity="rare";
+        dragon=randomFrom(dragons.rare);
+    }
+    else if(roll < 0.87){
+        rarity="epic";
+        dragon=randomFrom(dragons.epic);
+    }
+    else if(roll < 0.94){
+        rarity="legendary";
+        dragon=randomFrom(dragons.legendary);
+    }
+    else if(roll < 0.98){
+        rarity="mythic";
+        dragon=randomFrom(dragons.mythic);
+    }
+    else if(roll < 0.995){
+        rarity="ancient";
+        dragon=randomFrom(dragons.ancient);
+    }
+    else{
+        rarity="celestial";
+        dragon=randomFrom(dragons.celestial);
+    }
+
+    inventory.unshift({
+        dragon,
+        rarity
+    });
+
+    document.getElementById("gold").innerHTML =
+        "Gold: " + gold;
+
+    document.getElementById("result").innerHTML =
+        `🎉 Du hast erhalten:<br><span class="${rarity}">${dragon}</span>`;
+
+    updateInventory();
+}
+
+function updateInventory(){
+
+    let html="";
+
+    inventory.forEach(item=>{
+
+        html += `
+        <div class="dragon ${item.rarity}">
+            ${item.dragon}
+        </div>
+        `;
+
+    });
+
+    document.getElementById("items").innerHTML=html;
+}
+
+document
+.getElementById("eggBtn")
+.addEventListener("click", hatch);
+
+</script>
+
+</body>
+</html>
